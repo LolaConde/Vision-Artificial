@@ -1,0 +1,193 @@
+\documentclass[12pt]{article}
+
+\usepackage[utf8x]{inputenc}
+\usepackage[spanish]{babel}
+
+% COMENTARIOS DE MÁS DE UNA LÍNEA
+\usepackage{comment}
+% BIBLIOGRAFIA
+\usepackage{natbib}
+\bibliographystyle{apalike}
+\usepackage{multirow}
+\usepackage{geometry}
+\usepackage[hyphens]{url}
+\renewcommand{\bibsection}{}
+% COLORES LETRA
+\usepackage{xcolor}
+% LO DE PORTADA
+\usepackage{amssymb,amsmath,amsthm,amsfonts}
+\usepackage{calc}
+\usepackage{graphicx}
+\usepackage{subfigure}
+%\usepackage{natbib}
+\usepackage{url}
+\usepackage[utf8x]{inputenc}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{gensymb} %Símbolo de grado -> \degree
+\usepackage{float}
+\usepackage{caption}
+\graphicspath{{Imágenes/}}
+\usepackage{parskip}
+\usepackage{fancyhdr}
+\usepackage{vmargin}
+\setmarginsrb{3 cm}{2.5 cm}{3 cm}{2.5 cm}{1 cm}{1.5 cm}{1 cm}{1.5 cm}
+\title{Visión Artificial}					% Titulo
+\author{Lola Conde Herrera}					% Autor
+\date{\today}						% Fecha
+\usepackage{hyperref}
+\hypersetup{colorlinks=true, urlcolor=magenta, linkcolor=black}
+\urlstyle{same}
+\makeatletter
+\let\thetitle\@title
+\let\theauthor\@author
+\let\thedate\@date
+\makeatother
+
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{\theauthor}
+\lhead{\thetitle}
+\cfoot{\thepage}
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{titlepage}
+	\centering
+    \vspace*{0.0 cm}
+    \includegraphics[scale = 0.13]{logoUMU.png}\\[1.0 cm]	% Logo Universidad
+    \textsc{MEMORIA DE VIA:\\ SOLUCIONES A LOS EJERCICIOS PROPUESTOS}\\[1.0 cm]	% Nombre Universidad
+	\rule{\linewidth}{0.2 mm} \\[0.4 cm]
+	{ \huge \bfseries \thetitle}\\
+	\rule{\linewidth}{0.2 mm} \\[1.5 cm]
+
+    \begin{minipage}{0.4\textwidth}
+		\begin{center} \large
+			\emph{Alumna:}\\
+			\theauthor\linebreak
+			\end{center}
+	\end{minipage}\\[0.75 cm]
+
+     \begin{minipage}{0.4\textwidth}
+		\begin{center} \large
+			\emph{Correo:}\\
+			lola.c.h@um.es\linebreak
+			\end{center}
+	\end{minipage}\\[0.75 cm]
+
+    \begin{minipage}{0.4\textwidth}
+		\begin{center} \large
+			\emph{Curso:}\\
+			2023 - 2024\linebreak
+			\end{center}
+	\end{minipage}\\[0.75 cm]
+
+    \begin{minipage}{0.4\textwidth}
+		\begin{center} \large
+			\emph{Convocatoria:}\\
+			Junio\linebreak
+			\end{center}
+	\end{minipage}\\
+ 
+	\vfill
+	
+\end{titlepage}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\tableofcontents
+\pagebreak
+
+\listoffigures
+\pagebreak
+
+\section{HANDS}
+\subsection*{Enunciado}
+Amplia el ejemplo \textit{code/DL/hands/mano.py} hecho en clase para reconocer gestos simples, como por ejemplo contar el número de dedos extendidos. Haz un controlador sin contacto de varios grados de libertad que mida, al menos, distancia de la mano a la cámara y ángulo de orientación. Utilízalo para controlar alguno de tus programas.
+
+\subsection*{Solución}
+La solución está en \textit{HANDS/mano.py}.
+
+Este programa realiza las siguientes tareas:
+\subsubsection*{Mostrar una cámara}
+Se captura cada fotograma, se procesa para realizar las tareas indicadas posteriormente, y se muestra.
+
+\subsubsection*{Dibujar la palma de la mano y los dedos}
+
+Obteniendo los puntos de la mano con la herramienta 'MediaPipe Hands`, se han realizado líneas entre el principio y el final de los dedos de la mano. 
+
+Para la palma, primero se ha obtenido el centro de tres puntos que se encuentran en el borde de la palma, de forma que se obtiene el centro de la palma. En segundo lugar, se obtiene el radio, calculado como la distancia entre el centro y un punto que está al borde de la palma. De esta forma, se puede dibujar un círculo en la palma con el centro y radio calculados.
+
+\subsubsection*{Calcular qué dedos hay levantados}
+
+Para los dedos índice, corazón, anular y meñique, se ha calculado si se encuentran abiertos o cerrados usando la distancia entre el punto más bajo de la palma y el principio o el final del dedo. Si el dedo se encuentra cerrado, la distancia entre el punto más bajo de la palma y el final del dedo será menor que la distancia entre el punto más bajo de la palma y el principio del dedo. Si está abierto, es al contrario (es mayor).
+
+Para el dedo pulgar, se ha considerado abierto si el principio del índice está más cerca del final de la mano que el final del pulgar. Si está más lejos, el dedo pulgar está cerrado.
+
+\subsubsection*{Calcular el ángulo de orientación de la mano}
+
+Para calcular el ángulo de orientación de la mano, se ha calculado el ángulo entre dos vectores, el vector horizontal y el vector que se encuentra entre el final de la palma y el principio del dedo corazón. El segundo vector debe formar 0 grados con el horizontal si la mano está horizontal, y si esta empieza a girar, se calcula el ángulo.
+
+Si el principio de la palma está más a la izquierda que el principio del dedo corazón, entonces el ángulo es negativo. Esto se realiza comparando la componente x de los puntos.
+
+\subsubsection*{Controlar una aplicación}
+
+Si todos los dedos están levantados, se abre la aplicación, y si todos están cerrados se cierra. La condición ya estaba calculada en el cálculo de los dedos levantados.
+
+\subsubsection*{Calcular la distancia de la mano a la cámara}
+
+Se usa la palma de la mano para calcular la distancia. Se calcula con la fórmula siguiente:
+
+$$\frac{\text{distancia focal} * \text{ancho de la palma en centímetros}}{\text{ancho de la palma en píxeles}} = \text{distancia a la cámara en centímetros}$$
+
+Para calcular la distancia focal, se ha utilizado la herramienta \textit{calibrate.py}, que se puede encontrar en \href{https://github.com/albertoruiz/umucv/tree/master/code/calibrate}{el material de la asignatura}. Las fotografías tomadas para el cálculo de la distancia focal se encuentran en la carpeta \textit{HANDS/pattern}.
+
+\subsection*{Explicación de la fórmula para el cálculo de la distancia de la mano a la cámara}
+
+La distancia focal es la distancia (en píxeles) desde el centro del objetivo de la cámara hasta el sensor de esta. El objetivo es el lugar donde se encuentra la lente de la cámara, y el sensor es donde se proyecta la luz de la imagen para poder procesarla o almacenarla.
+
+La distancia focal se obtiene realizando la calibración de la cámara. Su obtención es muy útil, debido a que con esta se puede calcular la distancia de la cámara a un objeto (dada una fotografía), si se sabe el tamaño de este en la realidad y en la fotografía.
+
+Para explicar la fórmula para obtener la distancia, se necesita un objeto. Es este caso, se va a explicar con un esquema cuyo objeto es una botella:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.4]{Imágenes/formula1.jpeg}
+    \caption{Relación entre altura de una botella en la realidad y en la foto}
+    \label{fig:semana2FOV}
+\end{figure}
+
+Como se puede observar: X es la altura de la botella en el mundo real, Z es la distancia de la cámara a la botella, x es la altura de la botella en la fotografía tomada, y f es la distancia focal.
+
+Se puede observar como se forman dos triángulos (uno con lados f y x, y otro con lados X y Z). Los triángulos se encuentran en posición de Thales, por lo que se obtiene la siguiente fórmula:
+
+$$\frac{X}{Z}=\frac{x}{f}$$
+
+Si se quiere obtener más información sobre el teorema de Thales, se puede observar la siguiente url: \url{https://www.superprof.es/apuntes/escolar/matematicas/geometria/basica/triangulos-en-posicion-de-thales.html}.
+
+\subsection*{Bibliografía usada}
+\href{https://github.com/google/mediapipe/blob/master/docs/solutions/hands.md}{Comprender Hand Landmark - MediaPipe}
+
+\href{https://docs.opencv.org/3.4/d6/d6e/group__imgproc__draw.html#ga07d2f74cadcf8e305e810ce8eed13bc9}{Aprender a dibujar cuadrados}
+
+\href{https://docs.opencv.org/3.4/d6/d6e/group__imgproc__draw.html#ga5126f47f883d730f633d74f07456c576}{Aprender a escribir texto}
+
+\href{https://docs.opencv.org/3.4/d6/d6e/group__imgproc__draw.html#gaf10604b069374903dbd0f0488cb43670}{Aprender a dibujar círculos: cv.circle}
+
+\href{https://docs.python.org/3/library/math.html}{Funciones de math}
+
+\href{https://www.superprof.es/apuntes/escolar/matematicas/analitica/vectores/angulo-de-dos-vectores.html}{Ángulo entre dos vectores (para calcular la orientación de la mano)}
+
+\href{https://github.com/albertoruiz/umucv/blob/master/notebooks/imagen.ipynb}{Material de la asignatura}
+
+\href{https://www.sony.es/electronics/support/articles/00267921}{Entender qué es la distancia focal}
+
+\href{https://www.blogdelfotografo.com/tipos-caracteristicas-ventajas-sensores-camaras-fotos/}{Entender qué es un sensor}
+
+\href{https://www.superprof.es/apuntes/escolar/matematicas/geometria/basica/triangulos-en-posicion-de-thales.html}{Teorema de Thales}
+
+También se ha usado ChatGPT para crear el programa llamado \textit{programa.py}, el cual crea una ventana. Este se utilizó para controlarlo con \textit{mano.py}, de forma que se vea la ventana abrirse y cerrarse según el gesto de la mano.
+
+\end{document}
