@@ -32,9 +32,9 @@ proceso = None # Proceso de la terminal
 dedosLevantados = 0
 
 # Distancia focal de la cámara en píxeles
-distFocal = 536.56590112
+distFocal = 738
 # Ancho de la palma en la vida real (cm)
-anchoPalma = 10
+anchoPalma = 9
 
 def distanciaACamara(anchoManoPixeles):
     # Devuelve la distancia de la mano a la cámara en cm
@@ -158,7 +158,7 @@ for key, frame in autoStream():
             terminal_abierta = False
         
         # Calcula la distancia de la mano a la cámara
-        anchoManoPixeles = distancia(points[17], points[0])
+        anchoManoPixeles = distancia(points[9], points[0])
         distanciaManoACamara = distanciaACamara(anchoManoPixeles)
         # Imprime la distancia de la mano a la cámara
         putText(imagecam, "Distancia de la mano a la camara:" + f'{int(distanciaManoACamara)}', (10, 90))
