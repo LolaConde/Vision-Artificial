@@ -117,21 +117,21 @@ for key, frame in autoStream():
             trozo = frameToGray(trozo)
         
         # Se aplica el filtro correspondiente (0 no hace nada)
-        if filtroActual == "0":
-            frame[y1:y2+1, x1:x2+1] = trozo
         if filtroActual == "1":
-            frame[y1:y2+1, x1:x2+1] = frameToBox(trozo, 11)
+            trozo = frameToBox(trozo, 11)
         elif filtroActual == "2":
-            frame[y1:y2+1, x1:x2+1] = frameToGaussian(trozo, 3)
+            trozo = frameToGaussian(trozo, 3)
         elif filtroActual == "3":
-            frame[y1:y2+1, x1:x2+1] = frameToMedian(trozo, 17)
+            trozo = frameToMedian(trozo, 17)
         elif filtroActual == "4":
-            frame[y1:y2+1, x1:x2+1] = frameToBilateral(trozo, 20, 20)
+            trozo = frameToBilateral(trozo, 20, 20)
         elif filtroActual == "5":
-            frame[y1:y2+1, x1:x2+1] = frameToMin(trozo)
+            trozo = frameToMin(trozo)
         elif filtroActual == "6":
-            frame[y1:y2+1, x1:x2+1] = frameToMax(trozo)
-        
+            trozo = frameToMax(trozo)
+        elif filtroActual == "0":
+            pass
+        frame[y1:y2+1, x1:x2+1] = trozo
         # Se muestra un rectángulo rodeando la región de interés
         #cv.rectangle(frame, (x1,y1), (x2,y2), color=(0,255,255), thickness=2)
         
