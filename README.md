@@ -10,6 +10,6 @@ Se puede acceder al repositorio de la asignatura [aquí](https://github.com/albe
 
 ## Contenido
 
-- [FILTROS](filtros): Muestra en vivo el efecto de diferentes filtros, seleccionando con el teclado el filtro deseado y modificando sus parámetros.
+- [FILTROS](FILTROS): Muestra en vivo el efecto de diferentes filtros, seleccionando con el teclado el filtro deseado y modificando sus parámetros.
 
-- [HANDS](hands): Detecta las manos y indica información sobre su ángulo, distancia a la cámara, y números de dedos levantados. También permite controlar una aplicación con la mano.
+- [HANDS](HANDS): Detecta las manos y indica información sobre su ángulo, distancia a la cámara, y números de dedos levantados. También permite controlar una aplicación con la mano.
