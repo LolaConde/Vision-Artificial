@@ -112,21 +112,46 @@ Sin embargo, por la manera en la que se implementa en OpenCV, la erosión pone e
 
 De esta forma, al aplicar opening a la componente de luminancia de una imagen, se consigue que los píxeles que estén rodeados de píxeles con valores de luminancia muy bajos se conviertan en píxeles con valores de luminancia muy bajos, y los píxeles que estén rodeados de píxeles con valores de luminancia muy altos se conviertan en píxeles con valores de luminancia muy altos, eliminando así los brillos blancos pequeños que puedan formarse en la imagen por la luz.
 
-## Qué se ha realizado
+## Organización del código
 
-En primer lugar, se ha creado la clase "Filtro" con subclases, cada una representando un filtro mencionado anteriormente. Cada subclase tiene un identificador (la tecla asociada para activarlo), un nombre, un método para aplicar el filtro a una imagen, y otro para agregar los trackbars necesarios a la ventana.
+### filtroConstructor.py
+Este archivo contiene la clase "Filtro".  Esta clase contiene:
+- Un identificador (la tecla asociada para activarlo)
+- Un nombre
+- Un método para aplicar el filtro a una imagen
+- Un método para agregar los trackbars necesarios a la ventana
 
-Posteriormente, el flujo de ejecución es el siguiente:
+De esta forma, se conoce la estructura de cada filtro. 
 
-1. Se recibe cada fotograma
-2. Si se ha presionado una tecla correspondiente a un filtro, se guarda el filtro seleccionado. Si se cambia de filtro, se vuelve a crear la ventana y se añaden trackbars correpondientes al filtro seleccionado. Esto ocurre porque no se pueden eliminar los trackbars del filtro anterior salvo si se elimina y se vuelve a crear la ventana.
+El método para aplicar el filtro está implementado, de forma que si una subclase no lo sobreescribe, no se aplica ningún filtro y la imagen se devuelve tal cual. El método para añadir los trackbars también está implementado, de forma que si una subclase no lo sobreescribe, no se añade ningún trackbar.
+
+### filtrosColeccion.py
+Este archivo contiene los filtros que se han añadido al programa. Cada filtro es una subclase de "Filtro".
+
+De esta forma, no se necesita modificar el código principal para añadir un nuevo filtro, solo se necesita añadir una nueva subclase de "Filtro" en este archivo.
+
+### filtros.py
+Este archivo contiene el código principal del programa.
+
+En primer lugar, se crea la ayuda, que muestra las teclas que se pueden pulsar para activar los filtros, para cambiar la región de interés, para cambiar el modo de visualización, y para mostrar u ocultar la ayuda.
+
+Las teclas que se pueden pulsar para activar los filtros son las que se han asociado a cada filtro en "filtrosColeccion.py". 
+
+Por otro lado, se guardan los filtros de "filtrosColeccion.py" en una lista.
+
+Posteriormente, se realiza lo siguiente por cada fotograma de la cámara:
+
+1. Se guardan las opciones seleccionadas por el usuario.
+2. Si se ha presionado una tecla correspondiente a un filtro, y este filtro no es el que ya se está aplicando, se cambia el filtro. Si se cambia de filtro, se vuelve a crear la ventana y se añaden trackbars correpondientes al filtro seleccionado. Esto ocurre porque no se pueden eliminar los trackbars del filtro anterior salvo si se elimina y se vuelve a crear la ventana.
 3. Si se ha presionado una tecla para visualizar solo la región de interés o todo el fotograma, o para alternar entre color y blanco y negro, se registra la opción seleccionada.
 4. Si se presiona la tecla "h", se muestra u oculta la ayuda.
 5. Se guarda la región de interés seleccionada.
 6. Se aplica el filtro seleccionado a la sección de interés, y se escribe el nombre del filtro.
 8. Se pasa a blanco y negro la región de interés si así se ha seleccionado.
 9. Se dibuja un rectángulo alrededor de la sección de interés.
-10. Se muestra el fotograma o la región de interés.
+10. Se muestra el fotograma o la región de interés (según se haya seleccionado).
+
+De esta forma, el único filtro al que se accede es al filtro NoFiltro, ya que se debe empezar el programa sin ningún filtro aplicado. El resto de filtros pueden añadirse o eliminarse, con el único detalle de que hay que fijarse en no añadir un filtro asociado a una tecla ya usada.
 
 ## Bibliografía usada
 
