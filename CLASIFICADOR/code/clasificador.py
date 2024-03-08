@@ -19,7 +19,7 @@ assert len(rest)==1, 'Parámetros desconocidos: '+str(rest[1:])
 if args.models is None or args.method is None:
     print("Falta alguno de los parámetros obligatorios")
     sys.exit(1)
-if not os.path.exists(args.models) or not os.path.isdir(args.models):
+if not os.path.isdir(args.models):
     print(f"La carpeta {args.models} no existe.")
     sys.exit(1)
 

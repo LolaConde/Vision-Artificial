@@ -34,3 +34,12 @@ En primer lugar, se recogen los parámetros de entrada del programa (directorio 
 Se obtiene el clasificador (de la clase Clasificador). Para ello, se recorren las subclases y se queda con la subclase cuyo atributo método coincide con el método pasado como parámetro. Si este no existe, se muestra un mensaje indicándolo y se cierra el programa.
 
 Se empieza a capturar el vídeo. Por cada frame que se captura, se llama al método similarity del clasificador con el frame y cada una de las imágenes del directorio de modelos. Se almacena la similaridad de la imagen con mayor similaridad. Se muestra por pantalla el frame, el valor de similaridad mayor y el nombre de la imagen con mayor similaridad.
+
+## Bibliografía
+[MediaPipe Image Embedder](https://developers.google.com/mediapipe/solutions/vision/image_embedder/python)
+
+[Comprobar la existencia de un fichero](https://www.geeksforgeeks.org/python-os-path-exists-method/)
+
+[Comprobar la existencia de un directorio](https://www.geeksforgeeks.org/python-os-path-isdir-method/)
+
+[Recorrer archivos de un directorio](https://www.codigopiton.com/como-listar-archivos-de-carpeta-en-python/)
