@@ -138,9 +138,9 @@ class sift(Clasificador):
         
     @classmethod
     def inicializoClase(cls):
-        # Comparador de keypoints
+        # Compara los descriptores de los keypoints de dos imágenes
         cls.bf = cv.BFMatcher()
-        # Detector de keypoints
+        # Calcula los keypoints y descriptores
         cls.sift = cv.SIFT_create(nfeatures = 500)
     
     def getMethod():
