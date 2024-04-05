@@ -28,6 +28,7 @@
 \usepackage{float}
 \usepackage{caption}
 \graphicspath{{Imágenes/}}
+\usepackage{hyperref}
 \usepackage{parskip}
 \usepackage{fancyhdr}
 \usepackage{vmargin}
@@ -103,7 +104,10 @@
 \listoffigures
 \pagebreak
 
-\section{HANDS}
+\section*{Introducción}
+Cada ejercicio se ha realizado en una carpeta diferente, llamada como el nombre del ejercicio. La excepción es SIFT, que se encuentra en CLASIFICADOR porque es una ampliación de este.
+
+\section{HANDS} \label{sec:hands}
 \subsection*{Enunciado}
 Amplia el ejemplo \textit{code/DL/hands/mano.py} hecho en clase para reconocer gestos simples, como por ejemplo contar el número de dedos extendidos. Haz un controlador sin contacto de varios grados de libertad que mida, al menos, distancia de la mano a la cámara y ángulo de orientación. Utilízalo para controlar alguno de tus programas.
 
@@ -515,5 +519,109 @@ Esto ayuda a comparar imágenes, de modo que cuantas más coincidencias de punto
 \href{https://www.codigopiton.com/como-listar-archivos-de-carpeta-en-python/}{Recorrer archivos de un directorio}
 
 \href{https://github.com/albertoruiz/umucv/blob/master}{Material de la asignatura (código y notebooks)}
+\newpage
+\section{SIFT}
+\subsection*{Enunciado}
+Añade al ejercicio CLASIFICADOR un método basado en el número de coincidencias de \textit{keypoints} SIFT. Utilízalo para reconocer objetos con bastante textura (p. ej. carátulas de CD, portadas de libros, cuadros de pintores, etc.).
 
+\subsection*{Solución}
+El código y explicación de SIFT se encuentra en la sección CLASIFICADOR debido a que el código debe ir en conjunto al código de CLASIFICADOR.
+\newpage
+\section{MAPA}
+\subsection*{Enunciado}
+Amplia el ejemplo \textsc{code/medidor.py} para convertir la distancia entre dos pixels marcados con el ratón en el ángulo que forman los rayos ópticos correspondientes, sabiendo el campo visual (FOV) de la cámara. Utiliza el script para encontrar mediante una construcción geométrica la posición aproximada en un mapa desde la que se ha tomado una imagen en la que se ven algunos puntos característicos.
+
+\subsection*{FOV}
+En primer lugar, se va a calcular el FOV de la cámara dada su distancia focal. Para ello, se debe recordar la definición de campo visual y distancia focal. Se presenta un dibujo para que se comprenda mejor (en este caso, se ve el FOV horizontal):
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.4]{Imágenes/semana2-triangulos.png}
+    \caption{Relación entre FOV, ancho de la imagen y distancia focal}
+    \label{fig:semana2FOV}
+\end{figure}
+
+Como se puede observar, la tangente de $\frac{FOV}{2}$ es igual a $\frac{w/2}{f}$ por la definición de tangente\footnote{En triángulos rectángulos, la tangente es la razón entre el cateto opuesto y el adyacente}. De este modo, se obtiene la fórmula:
+
+$$tan\left(\frac{FOV_{horizontal}}{2}\right) = \frac{w/2}{f}$$
+
+Si se quiere calcular el FOV vertical, bastaría con cambiar el ancho de la imagen por el largo de esta. Serviría la fórmula anterior, siendo $w$ la altura en vez del ancho de la imagen.
+
+\subsubsection*{Cálculos}
+
+Ya se tiene la \textbf{distancia focal}, que se calculó en el ejercicio \ref{sec:hands}, en el caso de mi cámara es \textbf{738 píxeles}. Para despejar la fórmula es necesario indicar que la cámara toma fotografías de un ancho de 640 píxeles (w).
+
+$$tan\left(\frac{FOV}{2}\right) = \frac{w/2}{f} \rightarrow FOV = arctan\left(\frac{w/2}{f}\right)*2 = arctan\left(\frac{640/2}{738}\right)*2 = 46.88\degree$$
+
+Se obtiene un \textbf{FOV horizontal} de \textbf{46.88 grados}.
+
+Ahora, se calculará el vertical (las fotografías tomadas por la cámara tienen un alto de 360 píxeles):
+
+$$tan\left(\frac{FOV}{2}\right) = \frac{w/2}{f} \rightarrow FOV = arctan\left(\frac{w/2}{f}\right)*2 = arctan\left(\frac{360/2}{738}\right)*2 = 27.4\degree$$
+
+Se obtiene un \textbf{FOV vertical} de \textbf{27.4 grados}.
+
+\subsection*{Ángulo entre 2 puntos}
+
+Para calcular el ángulo que forman los rayos ópticos correspondientes  a dos píxeles marcados con el ratón, se debe de tener en cuenta la imagen \ref{fig:angulo-entre-puntos}, perteneciente a los apuntes de la asignatura.
+
+
+\begin{figure} [h]
+    \centering
+    \includegraphics[width=0.5\linewidth]{Imágenes/Imagen-angulo-puntos-material-asignatura.png}
+    \caption{Ángulo entre puntos de la imagen (pertenece a \href{https://raw.githubusercontent.com/albertoruiz/umucv/master/images/demos/anglepixs.svg}{los apuntes de la asignatura})}
+    \label{fig:angulo-entre-puntos}
+\end{figure}
+Como se puede observar en la imagen, si se tiene la distancia focal, se puede obtener el vector que va hasta un punto de la imagen. Cogiendo el inicio del vector como (0,0,0), se tiene:
+
+\begin{itemize}
+    \item El desplazamiento en x: Es la coordenada x del punto en la imagen (en píxeles) menos la mitad del ancho de la imagen (en píxeles) ya que el inicio del vector se encuentra en el centro. 
+    \item El desplazamiento en y: Se calcula de forma similar al anterior, con la coordenada en y del punto en la imagen menos la mitad del alto de la imagen (el inicio del vector se encuentra en el centro).
+    \item El desplazamiento en z: Es la distancia focal (en píxeles) de la imagen. 
+\end{itemize}
+
+Una vez obtenidos los dos vectores de dos puntos, se puede calcular el ángulo que estos forman con la fórmula siguiente:
+
+\[
+\cos(\alpha) = \frac{\vec{u} \cdot \vec{v}}{|\vec{u}| |\vec{v}|} \rightarrow \alpha = \arccos{\frac{\vec{u} \cdot \vec{v}}{|\vec{u}| |\vec{v}|}}
+\]
+
+Y con todo esto, se obtiene el ángulo ($\alpha$) entre los vectores (los rayos ópticos correspondientes a dos píxeles marcados con el ratón).
+
+\subsubsection*{Código}
+
+Se ha modificado el código de \textit{medidor.py} para añadir una función que calcula el ángulo entre los vectores dados sus puntos en la imagen. Se ha almacenado en variables la distancia focal, el alto y el ancho de la cámara (en píxeles) de forma que se pueda calcular el ángulo de la forma anteriormente explicada.
+
+Después, se ha añadido al texto mostrando la distancia entre los puntos, los ángulos que estos forman.
+
+\subsection*{Cámara usada}
+
+Al utilizar la distancia focal y el FOV de la cámara para realizar el ejercicio, es importante indicar la cámara que se utiliza. Se ha cogido como referencia la cámara de un portátil Acer Aspire 3.
+
+\subsection*{Jupyter notebook}
+
+\textit{Utiliza el script para encontrar mediante una construcción geométrica la posición aproximada en un mapa desde la que se ha tomado una imagen en la que se ven algunos puntos característicos.}
+
+Se ha realizado un notebook en el que se puede observar el cálculo de la posición desde la que se ha tomado una fotografía dados dos puntos característicos. Este notebook se encuentra en \textit{ejercicioMAPA.ipynb}.
+
+Las imágenes que se encuentran en la carpeta \textit{img} son imágenes usadas en el notebook.
+
+\subsection*{Bibliografía usada}
+\href{https://github.com/albertoruiz/umucv/blob/master/notebooks/imagen.ipynb}{Material de la asignatura}
+
+\href{https://www.sony.es/electronics/support/articles/00267921}{Entender qué es la distancia focal}
+
+\href{https://www.blogdelfotografo.com/tipos-caracteristicas-ventajas-sensores-camaras-fotos/}{Entender qué es un sensor}
+
+\href{https://www.superprof.es/apuntes/escolar/matematicas/geometria/basica/triangulos-en-posicion-de-thales.html}{Teorema de Thales}
+
+\href{https://numpy.org/doc/stable/reference/generated/numpy.dot.html}{numpy dot}
+
+\href{https://numpy.org/doc/stable/reference/generated/numpy.linalg.norm.html#numpy-linalg-norm}{numpy norm}
+
+\href{https://numpy.org/doc/stable/reference/generated/numpy.arccos.html}{numpy arccos}
+
+\href{https://numpy.org/doc/stable/reference/generated/numpy.degrees.html}{numpy degrees}
+
+\href{https://numpy.org/doc/stable/reference/generated/numpy.array.html}{numpy array}
 \end{document}
