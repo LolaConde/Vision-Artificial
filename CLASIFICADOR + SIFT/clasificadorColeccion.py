@@ -28,7 +28,7 @@ class embedder(Clasificador):
     def inicializoClase(cls):
         # Guardar el modelo de la carpeta imports
         options = vision.ImageEmbedderOptions(
-            base_options = python.BaseOptions(model_asset_path='../imports/embedder.tflite'),
+            base_options = python.BaseOptions(model_asset_path='./embedder.tflite'),
             l2_normalize = True,
             quantize     = True
         )
