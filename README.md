@@ -27,6 +27,8 @@ Cada ejercicio se encuentra en una carpeta distinta, con el nombre del ejercicio
 
 - [**RECTIF**](./RECTIF)
 
+- [**RA**](./RA)
+
 ### Opcionales
 
 - [**MAPA**](./MAPA)
