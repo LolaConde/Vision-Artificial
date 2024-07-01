@@ -128,7 +128,7 @@ actual = [0.5, 0.5, 0] # Dónde se encuentra el cubo
 from collections import deque
 pulsado = False
 point = deque(maxlen=1)
-def fun(event, x, y, flags, param): # Si se pulsa la pantalla
+def fun(event, x, y, flags, param):
     global pulsado
     if event == cv.EVENT_LBUTTONDOWN:
         pulsado = True
@@ -167,6 +167,7 @@ for key,frame in autoStream():
                 if M_Matriz is None:
                     continue
                 if pulsado:  
+                    # Si se ha pulsado la pantalla, se calcula el punto 3D correspondiente (desplazamiento)
                     Matriz_sin_3_columna = np.delete(M_Matriz, 2, axis=1)
                     M_matriz_inv = np.linalg.inv(Matriz_sin_3_columna)
                     point_3D = htrans(M_matriz_inv, point[0])
