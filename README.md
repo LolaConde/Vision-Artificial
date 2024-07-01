@@ -11,10 +11,11 @@
 
 Cada ejercicio se encuentra en una carpeta distinta, con el nombre del ejercicio. Dentro de cada carpeta, se encuentra:
 
-- La documentación en un notebook con el mismo nombre que la carpeta
+- La documentación en un notebook con el mismo nombre que la carpeta (y en formato HTML)
 - Una carpeta llamada *img* con las imágenes usadas en la documentación
 - Archivos necesarios para la realización del ejercicio
  
+ A su vez, se encuentra con el nombre de "Memoria" un documento ipynb y el correspondiente HTML con todo el contenido de las memorias individuales de cada ejercicio, de modo que se pueda acceder a ellas de forma conjunta si así se desea.
 ## Ejercicios realizados
 
 ### Obligatorios
